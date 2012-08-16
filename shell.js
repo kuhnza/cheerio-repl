@@ -4,7 +4,7 @@ var argv = require('optimist').argv,
 	request = require('./request').request;
 
 function usage() {
-	console.log("Usage: node cheerio_shell.js URL \n\n" + 
+	console.log("Usage: node shell.js URL \n\n" + 
 		"Global objects available inside the shell:\n" +
 		"  $ = cheerio parsed DOM object\n" +
 		"  html = raw html returned from URL\n" +
