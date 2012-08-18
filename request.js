@@ -19,8 +19,8 @@ function StringStream() {
 }
 util.inherits(StringStream, stream.Stream);
 
-StringStream.prototype.write = function(data) {
-    this.caught += data.toString();
+StringStream.prototype.write = function(data) {    
+    this.caught += data.toString();    
     this.emit('data', data);
 };
 
@@ -31,6 +31,60 @@ StringStream.prototype.end = function() {
 StringStream.prototype.destroy = function() {
     this.emit('close');
 };
+
+
+/**
+ * Basic cookie storage mechanism.
+ */
+function CookieJar() {
+    this.jar = {};
+}
+
+CookieJar.prototype.get = function (key) {
+    if (this.jar[key]) {
+        return this.jar[key];
+    }
+    return null;
+};
+
+CookieJar.prototype.getValue = function (key) {
+    var cookie = this.get(key);
+    if (cookie) {
+        return cookie.value;
+    }
+    return null;
+};
+
+CookieJar.prototype.set = function (cookieString) {
+    var parts = cookieString.split(';'),
+        cookie = {};
+
+    for (var i = 0; i < parts.length; i++) {
+        var part = parts[i];
+            idx = part.indexOf('='),
+            key = part.slice(0, idx), 
+            value = part.slice(idx + 1);            
+
+        if (i === 0) {
+            cookie.key = key;
+            cookie.value = value;
+            this.jar[key] = cookie;            
+        } else {
+            cookie[key] = value || true;
+        }
+    }
+};
+
+CookieJar.prototype.toString = function () {
+    var cookies = _.values(this.jar),
+        output = '';
+    for (var i = 0; i < cookies.length; i++) {
+        output += cookies[i].key + '=' + cookies[i].value + '; ';
+    }
+    return _.trim(output);
+};
+
+module.exports.CookieJar = CookieJar;
 
 /**
  * Simplified jQuery-like HTTP request method.
@@ -48,6 +102,12 @@ function request(location, settings) {
     if (_.isFunction(settings)) {
         settings = { complete: settings };
     }
+
+    _.defaults(settings, {
+        maxRedirects: 10,
+        nRedirects: 0
+    });
+
     var callback = settings.complete || function () {};
 
     var options = url.parse(location);
@@ -57,14 +117,23 @@ function request(location, settings) {
     if (!options.headers) {
         options.headers = {};
     }
-    _.defaults(options.headers, {
+
+    var defaultHeaders = {
         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_4) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.75 Safari/537.1',
         'accept-encoding': 'gzip,deflate'
-    });
+    };
+
+    if (settings.cookieJar) {        
+        var cookie = settings.cookieJar.toString();
+        if (cookie.length) {            
+            defaultHeaders['cookie'] = settings.cookieJar.toString();            
+        }            
+    }
+    _.defaults(options.headers, defaultHeaders);
 
     var proto = (options.protocol === 'http:') ? http : https; // switch between http/s depending on location
     var req = proto.request(options, function (res) {
-        var output = new StringStream();
+        var output = new StringStream();                
         switch (res.headers['content-encoding']) {
             case 'gzip':
                 res.pipe(zlib.createGunzip()).pipe(output);
@@ -79,22 +148,35 @@ function request(location, settings) {
         }
 
         output.on('end', function() {
-            if (res.statusCode !== 200) {
-                callback({
-                    success: false,
-                    code: res.statusCode,
-                    message: 'Error: ' + output.caught
-                });
-            } else {
+            if (settings.cookieJar && res.headers['set-cookie']) {
+                var cookies = res.headers['set-cookie'];
+                for (var i = 0; i < cookies.length; i++) {
+                    settings.cookieJar.set(cookies[i]);
+                }
+            }
+
+            if (res.statusCode >= 300 && res.statusCode < 400) {
+                if (settings.maxRedirects > settings.nRedirects++) {
+                    // Follow redirect                                        
+                    request(res.headers['location'], settings);
+                } else {
+                    var err = new Error('Max redirects reached.');
+                    err.success = false;
+                    callback(err); 
+                }
+            } else if (res.statusCode >= 400) {
+                var err = new Error(output.caught);
+                err.success = false;
+                err.code = res.statusCode;
+                callback(err);            
+            } else {                                
                 callback(null, output.caught, res);
             }
         });
     });
     req.on('error', function (err) {
-        callback({
-            success: false,
-            message: err.message
-        });
+        err.success = false;
+        callback(err);
     });
 
     if (options.data) {
