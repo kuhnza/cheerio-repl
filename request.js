@@ -131,7 +131,7 @@ function request(location, settings) {
     }
     _.defaults(options.headers, defaultHeaders);
 
-    var proto = (options.protocol === 'http:') ? http : https; // switch between http/s depending on location
+    var proto = (options.protocol === 'http:') ? http : https; // switch between http/s depending on location    
     var req = proto.request(options, function (res) {
         var output = new StringStream();                
         switch (res.headers['content-encoding']) {
@@ -157,8 +157,10 @@ function request(location, settings) {
 
             if (res.statusCode >= 300 && res.statusCode < 400) {
                 if (settings.maxRedirects > settings.nRedirects++) {
-                    // Follow redirect                                        
-                    request(res.headers['location'], settings);
+                    // Follow redirect        
+                    var baseUrl = options.protocol + '//' + options.host,
+                        location = url.resolve(baseUrl, res.headers['location']);                    
+                    request(location, settings);
                 } else {
                     var err = new Error('Max redirects reached.');
                     err.success = false;
@@ -174,7 +176,7 @@ function request(location, settings) {
             }
         });
     });
-    req.on('error', function (err) {
+    req.on('error', function (err) {        
         err.success = false;
         callback(err);
     });
