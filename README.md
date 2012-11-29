@@ -3,26 +3,30 @@ Cheerio REPL
 
 A Node JS REPL for interacting with live [Cheerio](https://github.com/MatthewMueller/cheerio) DOM.
 
+Installation
+------------
+
+`npm install -g cheerio-repl`
+
 Usage
 -----
 
-`node shell.js URL`
+`cheerio <URL>`
 
 Global objects available inside the shell:
 >  $ = cheerio parsed DOM object  
->	html = raw html returned from URL  
->	res = raw response object returned from URL  
+>  res = raw response object returned from URL  
 
 Example
 -------
 
 At the command prompt run the following:
-`node shell.js "http://hubify.com"`
+`cheerio http://tubes.io`
 
-The cheerio prompt should appear where upon you can interact with the loaded DOM like so:
+The cheerio prompt should appear whereupon you can interact with the loaded DOM like so:
 ```
 cheerio> $('title').text;
-'Hubify - Data On-demand'
+'Home - tubes.io'
 cheerio>
 ```
 
