@@ -1,0 +1,30 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'nodejs', '/usr/bin/npm', 'publish' ]
+2 info using npm@1.1.66
+3 info using node@v0.8.15
+4 verbose publish [ '.' ]
+5 verbose read json /home/dave/Code/cheerio-repl/package.json
+6 verbose cache add [ '.', null ]
+7 silly cache add name=undefined spec="." args=[".",null]
+8 verbose parsed url { pathname: '.', path: '.', href: '.' }
+9 silly lockFile 3a52ce78- .
+10 verbose lock . /home/dave/.npm/3a52ce78-.lock
+11 verbose read json package.json
+12 silly lockFile 3a52ce78- .
+13 error addLocal Could not install .
+14 error Failed to parse json
+14 error Unexpected string
+15 error File: package.json
+16 error Failed to parse package.json data.
+16 error package.json must be actual JSON, not just JavaScript.
+16 error
+16 error This is not a bug in npm.
+16 error Tell the package author to fix their package.json file. JSON.parse
+17 error System Linux 3.5.0-18-generic
+18 error command "nodejs" "/usr/bin/npm" "publish"
+19 error cwd /home/dave/Code/cheerio-repl
+20 error node -v v0.8.15
+21 error npm -v 1.1.66
+22 error file package.json
+23 error code EJSONPARSE
+24 verbose exit [ 1, true ]

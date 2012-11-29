@@ -1,39 +1,38 @@
 {
-	"name": "cheerio-repl",
-	"version": "0.1.0",
-	"author": "Dave Kuhn <david.s.kuhn@gmail.com>",
-	"description": "A REPL for interacting with DOMs using Cheerio",
-	"homepage": "https://github.com/kuhnza/cheerio-repl",
-	"bugs": "https://github.com/kuhnza/cheerio-repl/issues",
-	"contributors": [
-		{
-			"name": "Dave Kuhn",
-			"email": "david.s.kuhn@gmail.com"
-		}
-	],
-	"preferGlobal": "true",
-	"bin": {
-		"cheerio" : "./bin/cheerio"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/kuhnza/cheerio-repl.git"
-	},
-	"keywords": [
-	    "cheerio",
-            "DOM",
-            "scraping",
-            "REPL"	    
-	],
-	"dependencies": {
-    	    "cheerio": "0.10.x",
-            "optimist": "0.1.x",
-	    "tunnel": "0.0.x",
-	    "underscore": "1.4.x",
-	    "underscore.string": "2.3.x"        
-	},
-	"license": "MIT",
-	"engine": {
-		"node": ">=0.8.x"
-	}
+    "name": "cheerio-repl",
+    "version": "0.1.1",
+    "author": "Dave Kuhn <david.s.kuhn@gmail.com>",
+    "description": "A REPL for interacting with DOMs using Cheerio",
+    "homepage": "https://github.com/kuhnza/cheerio-repl",
+    "bugs": "https://github.com/kuhnza/cheerio-repl/issues",
+    "contributors": [{
+        "name": "Dave Kuhn",
+        "email": "david.s.kuhn@gmail.com"
+    }],
+    "preferGlobal": "true",
+    "bin": {
+        "cheerio" : "./bin/cheerio"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/kuhnza/cheerio-repl.git"
+    },
+    "keywords": [
+        "cheerio",
+        "DOM",
+        "scraping",
+        "REPL"	    
+    ],
+    "dependencies": {
+    	"cheerio": "0.10.x",
+        "optimist": "0.1.x",
+        "request": "2.12.x",
+	"tunnel": "0.0.x",
+	"underscore": "1.4.x",
+	"underscore.string": "2.3.x"        
+    },
+    "license": "MIT",
+    "engine": {
+        "node": ">=0.8.x"
+    }
 }
