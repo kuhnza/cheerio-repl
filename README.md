@@ -21,11 +21,11 @@ Example
 -------
 
 At the command prompt run the following:
-`cheerio http://tubes.io`
+`cheerio "http://tubes.io"`
 
 The cheerio prompt should appear whereupon you can interact with the loaded DOM like so:
 ```
-cheerio> $('title').text;
+cheerio> $('title').text();
 'Home - tubes.io'
 cheerio>
 ```
