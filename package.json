@@ -1,6 +1,6 @@
 {
     "name": "cheerio-repl",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "author": "Dave Kuhn <david.s.kuhn@gmail.com>",
     "description": "A REPL for interacting with DOMs using Cheerio",
     "homepage": "https://github.com/kuhnza/cheerio-repl",
