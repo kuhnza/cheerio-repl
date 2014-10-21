@@ -1,6 +1,6 @@
 {
     "name": "cheerio-repl",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "author": "Dave Kuhn <david.s.kuhn@gmail.com>",
     "description": "A REPL for interacting with DOMs using Cheerio",
     "homepage": "https://github.com/kuhnza/cheerio-repl",
@@ -8,6 +8,9 @@
     "contributors": [{
         "name": "Dave Kuhn",
         "email": "david.s.kuhn@gmail.com"
+    }, {
+        "name": "Naveen Kumar Molleti",
+        "email": "nerd.naveen@gmail.com"
     }],
     "preferGlobal": "true",
     "bin": {
@@ -24,12 +27,12 @@
         "REPL"	    
     ],
     "dependencies": {
-    	"cheerio": "0.10.x",
-        "optimist": "0.1.x",
-        "request": "2.12.x",
-	"tunnel": "0.0.x",
-	"underscore": "1.4.x",
-	"underscore.string": "2.3.x"        
+        "cheerio": "^0.18.0",
+        "optimist": "^0.6.x",
+        "request": "^2.45.x",
+        "tunnel": "^0.0.3",
+        "underscore": "^1.4.x",
+        "underscore.string": "2.3.x"
     },
     "license": "MIT",
     "engine": {
